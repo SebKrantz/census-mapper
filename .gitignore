@@ -4,7 +4,7 @@
 
 # Session Data files
 .RData
-
+rsconnect
 # User-specific files
 .Ruserdata
 
