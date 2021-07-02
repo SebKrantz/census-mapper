@@ -23,7 +23,7 @@ shinyUI(fluidPage(div(class="outer",
                                     tabsetPanel(id="geotab",
                                                 tabPanel("Data",
                                                          div(id='myDiv',
-                                                             selectInput("topic", "Topic", choices = c("Select a Topic" = "", names(cens_vars_list))), # , selected = "Composite Indices"
+                                                             selectInput("topic", "Topic", choices = names(cens_vars_list)), # c("Select a Topic" = "", names(cens_vars_list)) # , selected = "Composite Indices"
                                                              selectInput("color", "Indicator", choices = c("Select an Indicator" = "")), # c("Human Development Index" = "HDI")  # cens_vars_list[["Composite Indices"]], selected = "HDI"),
                                                              conditionalPanel("input.topic != 'Composite Indices' && input.topic != ''",
                                                                radioButtons("unit", "Unit", choices = "Number", inline = TRUE)
