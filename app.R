@@ -20,7 +20,7 @@ idvars <- c("Region", "District",  "County",  "Subcounty", "Parish")
 
 names(cens_vars_list)[1L] <- "Composite Indices"
 
-agglabs <- setNames(idvars, paste0(idvars, " (", fNdistinct(gv(DATA, idvars)),")"))
+agglabs <- setNames(idvars, paste0(idvars, " (", fndistinct(gv(DATA, idvars)),")"))
 
 # rsconnect::showLogs()
 # Todo: still accomodate per area !

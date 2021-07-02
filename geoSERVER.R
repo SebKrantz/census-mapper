@@ -111,7 +111,7 @@ INPUTS <- reactive({
   if(input$unit == "Number per Km2") colorData <- colorData / .subset2(data, "AREA")
     
   CFUN <- identity
-  if (length(colorData) && fNdistinct.default(colorData) < 8L) { 
+  if (length(colorData) && fndistinct.default(colorData) < 8L) { 
       pal <- colorFactor(input$palette, qF(colorData))
   } else {
     if(input$discbreaks) {
