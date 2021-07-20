@@ -11,8 +11,6 @@ library(scales)
 library(htmltools)
 library(RColorBrewer)
 
-# setwd("C:/Users/Sebastian Krantz/Dropbox/MoFPED/Census Mapping App")
-
 # rm(list = ls())
 load("app_DATA.RData")
 
