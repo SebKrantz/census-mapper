@@ -14,16 +14,17 @@ mapdata <- reactive({
 
 observe({
   
-  if(input$topic != "") {
+  if(nzchar(input$topic)) {
     ch <- cens_vars_list[[input$topic]]
     updateSelectInput(session, "color", choices = ch, 
                       selected = if(input$topic == "Population Composition") "POP" else NULL) 
   }
+  
 })
 
 observe({
  
-  if(input$topic != "" && input$color != "") {
+  if(nzchar(input$topic) && nzchar(input$color)) {
    ch <- cens_vars_list[[input$topic]]
    hp <- attr(ch, "HasPerc")
    if(isTRUE(hp[match(input$color, unattrib(ch))])) {
@@ -37,6 +38,7 @@ observe({
      
    }
   }
+  
 })
 
 # Create the map
@@ -55,12 +57,12 @@ output$map <- renderLeaflet({
     addTiles(urlTemplate = 'https://{s}.tile.jawg.io/jawg-matrix/{z}/{x}/{y}{r}.png?access-token=xijZq0l2bXySH8ZKrMZZ1Rd5njDpapUZGzDB82tGt2Hv5rmzQE4VPNR8hygoQbi3', # https://{s}.tile.jawg.io/jawg-dark/{z}/{x}/{y}{r}.png?access-token={xijZq0l2bXySH8ZKrMZZ1Rd5njDpapUZGzDB82tGt2Hv5rmzQE4VPNR8hygoQbi3}',
              attribution = '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank" class="jawg-attrib">&copy; <b>Jawg</b>Maps</a> | <a href="https://www.openstreetmap.org/copyright" title="OpenStreetMap is open data licensed under ODbL" target="_blank" class="osm-attrib">&copy; OSM contributors</a>',  # '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
              group = "Jawg Matrix") %>% #
-    addTiles(group="Open Street Map", attribution = '&copy; Sebastian Krantz 2018 | Open Street Map') %>%
+    addTiles(group="Open Street Map", attribution = '&copy; Sebastian Krantz 2021 | Open Street Map') %>%
     addProviderTiles('OpenTopoMap', group = "Open Topo Map") %>%
-    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', group="Google Maps", attribution = '&copy; Sebastian Krantz 2018 | Maps by Google') %>%
-    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', group="Google Terrain", attribution = '&copy; Sebastian Krantz 2018 | Maps by Google') %>%
-    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', group="Google Hybrid", attribution = '&copy; Sebastian Krantz 2018 | Maps by Google') %>%
-    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}', group="Google Satellite", attribution = '&copy; Sebastian Krantz 2018 | Maps by Google') %>%
+    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', group="Google Maps", attribution = '&copy; Sebastian Krantz 2021 | Maps by Google') %>%
+    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', group="Google Terrain", attribution = '&copy; Sebastian Krantz 2021 | Maps by Google') %>%
+    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', group="Google Hybrid", attribution = '&copy; Sebastian Krantz 2021 | Maps by Google') %>%
+    addTiles(urlTemplate = 'https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}', group="Google Satellite", attribution = '&copy; Sebastian Krantz 2021 | Maps by Google') %>%
     # addProviderTiles('Stamen.TonerLite', group = "Stamen Toner Lite") %>%
     # addProviderTiles('Stamen.Terrain', group = "Stamen Terrain") %>%
     addProviderTiles('Esri.WorldStreetMap', group = "Esri World Street Map") %>% 
@@ -104,14 +106,14 @@ output$map <- renderLeaflet({
 input_opacity <-  debounce(reactive(input$opacity), 600)
 
 INPUTS <- reactive({
-  if(input$topic != "" && input$color != "") {
+  if(nzchar(input$topic) && nzchar(input$color)) {
   data <- mapdata()
   colvar <- if(input$unit == "Percent") paste0(input$color, "_P") else input$color
   colorData <- .subset2(data, colvar)
   if(input$unit == "Number per Km2") colorData <- colorData / .subset2(data, "AREA")
     
   CFUN <- identity
-  if (length(colorData) && fndistinct.default(colorData) < 8L) { 
+  if (length(colorData) && fndistinct(colorData) < 8L) { 
       pal <- colorFactor(input$palette, qF(colorData))
   } else {
     if(input$discbreaks) {
