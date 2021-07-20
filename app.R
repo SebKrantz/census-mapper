@@ -31,8 +31,8 @@ genpopup <- function(data, colvar = "POP_M", oth = c("POP", "HDI"),
   lhs[1L] <- substr(lhs[1L], 6L, 10000L)
   pop <- c(as.vector(lhs, "list"), .subset(data, vars))
   if(!all(int <- vapply(pop[oth], is.integer, TRUE))) 
-    pop[oth][!int] <- lapply(pop[oth][!int], round, 3)
-  o <- seq(1L, 2*length(vars), 2L)
+    pop[oth][!int] <- lapply(pop[oth][!int], round, 3L)
+  o <- seq(1L, 2L*length(vars), 2L)
   o <- order(c(o, o + 1L))
   do.call(paste, pop[o]) # lapply(, htmltools::HTML)
 }
