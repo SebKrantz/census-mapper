@@ -2,6 +2,7 @@
 # Uganda 2014 Census Map
 ##############################
 
+suppressPackageStartupMessages({
 library(shiny)
 library(shinyBS)
 library(collapse)
@@ -10,6 +11,7 @@ library(sf)
 library(scales)
 library(htmltools)
 library(RColorBrewer)
+})
 
 # rm(list = ls())
 load("app_DATA.RData")
@@ -18,7 +20,9 @@ idvars <- c("Region", "District",  "County",  "Subcounty", "Parish")
 
 names(cens_vars_list)[1L] <- "Composite Indices"
 
-agglabs <- setNames(idvars, paste0(idvars, " (", fndistinct(.subset(DATA, idvars)),")"))
+agglabs <- setNames(idvars, paste0(idvars, " (", 
+                                   c(fnrow(DATA_Region), fnrow(DATA_District), fnrow(DATA_County), 
+                                     fnrow(DATA_Subcounty), fnrow(DATA)), ")"))
 
 # rsconnect::showLogs()
 # Todo: still accomodate per area !
