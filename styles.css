@@ -17,7 +17,30 @@ body, label, input, button, select {
   font-family: 'Helvetica Neue', Helvetica;
   font-weight: 200;
 }
-h1, h2, h3, h4 { font-weight: 400; }
+.control-label {
+  font-weight: bold;
+}
+
+h1, h2, h3, h4 { 
+  font-weight: 400; 
+}
+ 
+.tabbable > .nav > li > a {
+  background-color: transparent;  
+  color: #333;
+  font-weight: bold;
+}
+.tabbable > .nav > li > a:hover {
+  color: #0067e6; 
+}
+.tabbable > .nav > li[class=active] > a {
+  background-color: #e6e6e6; 
+  color: #0067e6; 
+}
+
+.checkbox {
+  color: black;
+}
 
 #myDiv {
    padding: 15px 0 0 0;
