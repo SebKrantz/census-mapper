@@ -3,18 +3,19 @@
 ##############################
 
 suppressPackageStartupMessages({
-library(shiny)
-library(shinyBS)
-library(collapse)
-library(leaflet)
-library(sf) 
-library(scales)
-library(htmltools)
-library(RColorBrewer)
+  library(shiny)
+  library(shinyBS)
+  library(collapse) # > 1.8.0
+  library(leaflet)
+  library(sf) 
+  library(scales)
+  library(htmltools)
+  library(RColorBrewer)
 })
 
 # rm(list = ls())
-load("app_DATA.RData")
+# load("app_DATA.RData")
+qs::qreadm("app_DATA.qs", nthreads = 2)
 
 idvars <- c("Region", "District",  "County",  "Subcounty", "Parish")
 
@@ -34,10 +35,10 @@ genpopup <- function(data, colvar = "POP_M", oth = c("POP", "HDI"),
   lhs <- paste0("<br/><strong>", vars, ":</strong>") 
   lhs[1L] <- substr(lhs[1L], 6L, 10000L)
   pop <- c(as.vector(lhs, "list"), .subset(data, vars))
-  if(!all(int <- vapply(pop[oth], is.integer, TRUE))) 
-    pop[oth][!int] <- lapply(pop[oth][!int], round, 3L)
+  if(length(nint <- vtypes(pop[oth], FALSE) %!=% "integer")) 
+    pop[oth][nint] <- lapply(pop[oth][nint], round, 3L)
   o <- seq(1L, 2L*length(vars), 2L)
-  o <- order(c(o, o + 1L))
+  o <- radixorder(c(o, o + 1L))
   do.call(paste, pop[o]) # lapply(, htmltools::HTML)
 }
 
